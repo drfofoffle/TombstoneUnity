@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class GameControl : MonoBehaviour {
     public static float respawnFloat = 6;
     public static float Score = 0;
+    public static bool GamePlayed = false;
     private bool trigger = false;
     public GameObject text;
     private Text txt;
@@ -18,11 +19,16 @@ public class GameControl : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (Score > 0)
+        if ((Score > 0) && (Application.loadedLevelName == "Menu"))
+        {
+            txt.text = ("Game Over! \n Score: " + Score);
+        }
+
+        if ((Score > 0) && (Application.loadedLevelName == "Main"))
         {
             txt.text = ("Score: " + Score);
         }
-        
+
         if (Score == 0)
         {
             txt.text = ("");
@@ -47,6 +53,7 @@ public class GameControl : MonoBehaviour {
     IEnumerator wait()
     {
         yield return new WaitForSecondsRealtime(1);
+        GamePlayed = true;
         SceneManager.LoadScene("Menu");
         player.shot = false;
     }

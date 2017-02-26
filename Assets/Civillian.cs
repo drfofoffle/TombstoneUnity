@@ -52,7 +52,7 @@ public class Civillian : MonoBehaviour
                 if (falling)
                 {
                     //falling animation
-                    Quaternion target = Quaternion.Euler(deathRotaion, this.transform.eulerAngles.y, 0);
+                    Quaternion target = Quaternion.Euler(deathRotaion, this.transform.eulerAngles.y, this.transform.eulerAngles.z);
                     transform.rotation = Quaternion.Slerp(transform.rotation, target, Time.deltaTime * roationSmoothness);
                     Destroy(gun);
                     if ((Mathf.Abs(transform.eulerAngles.x - deathRotaion) <= 10) && (doDestroyLogic = true))

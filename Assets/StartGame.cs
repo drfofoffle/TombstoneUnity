@@ -1,17 +1,26 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 public class StartGame : MonoBehaviour {
-
-	// Use this for initialization
-	void Start () {
-	
-	}
+    public Text txt;
+    // Use this for initialization
+    void Start () {
+        txt.alignment = TextAnchor.MiddleCenter;
+    }
 	
 	// Update is called once per frame
 	void Update () {
-	
-	}
+	    if (GameControl.GamePlayed==false)
+        {
+            txt.text = ("Shoot me \n to play!");
+        }
+
+        if (GameControl.GamePlayed == true)
+        {
+            txt.text = ("Shoot me \n to play again!");
+        }
+    }
 
     void HitByRay()
     {

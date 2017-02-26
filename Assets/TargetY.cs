@@ -13,6 +13,7 @@ public class TargetY : MonoBehaviour {
     public float deathRotaion;                
     public float roationSmoothness;
     public float appearenceScore = 0;
+    public float zRot;
                          
     private bool doDestroyLogic = true;
     private float choice;
@@ -24,11 +25,13 @@ public class TargetY : MonoBehaviour {
     public AudioClip Bell;
     private AudioSource SoundSource;
     private bool soundTrigger = false;
+    public bool isStarter = false;
     // Use this for initialization
     void Start () {
      
         respawnModifier = 5;
         respawnModiferHome = GameControl.respawnFloat;
+        zRot = this.transform.rotation.eulerAngles.z;
         falling = false;
         SoundSource = GetComponent<AudioSource>();
         ;
@@ -36,7 +39,7 @@ public class TargetY : MonoBehaviour {
 
     // Update is called once per frame
     void Update()
-    {       
+    {         
         if (GameControl.Score >= appearenceScore)
         {
             if (player.shot)
@@ -57,7 +60,7 @@ public class TargetY : MonoBehaviour {
                     SoundSource.PlayOneShot(Bell);
                     Bell = null;
                     //falling animation
-                    Quaternion target = Quaternion.Euler(deathRotaion, this.transform.eulerAngles.y, 0);
+                    Quaternion target = Quaternion.Euler(deathRotaion, this.transform.eulerAngles.y, this.transform.eulerAngles.z);
                     transform.rotation = Quaternion.Slerp(transform.rotation, target, Time.deltaTime * roationSmoothness);
                     Destroy(gun);
                     if ((Mathf.Abs(transform.eulerAngles.x - deathRotaion) <= 10) && (doDestroyLogic = true))
@@ -68,7 +71,10 @@ public class TargetY : MonoBehaviour {
                         if (choice < 2)
                         {
                             //spawn civillian
-                            Instantiate(Resources.Load<GameObject>("CopyCowboy"), this.transform.position, Quaternion.Euler(90, this.transform.rotation.y, this.transform.rotation.z));
+                            if (isStarter == false)
+                            {
+                                Instantiate(Resources.Load<GameObject>("CopyCowboy"), this.transform.position, Quaternion.Euler(90,0,zRot));
+                            }
                             falling = false;
                             Destroy(this.gameObject);
 
@@ -76,8 +82,11 @@ public class TargetY : MonoBehaviour {
                         else
                         {
                             //spawning a target
-                            Instantiate(Resources.Load<GameObject>("Cowboy[]"), this.transform.position, Quaternion.Euler(90, this.transform.rotation.y, this.transform.rotation.z));
-                            falling = false;
+                            if (isStarter == false)
+                            {
+                                Instantiate(Resources.Load<GameObject>("Cowboy[]"), this.transform.position, Quaternion.Euler(90, 0,zRot));
+                            }
+                                falling = false;
                             Destroy(this.gameObject);
                         }
                     }
